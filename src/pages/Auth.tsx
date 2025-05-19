@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -8,8 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { DollarSign, AlertCircle } from 'lucide-react';
-import { Google } from 'lucide-react';
+import { DollarSign, AlertCircle, LogIn } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 
 const Auth = () => {
@@ -206,7 +204,7 @@ const Auth = () => {
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
-                    <Google className="mr-2 h-4 w-4" />
+                    <LogIn className="mr-2 h-4 w-4" />
                     Sign in with Google
                   </Button>
                 </form>
@@ -260,7 +258,7 @@ const Auth = () => {
                     onClick={handleGoogleSignIn}
                     disabled={loading}
                   >
-                    <Google className="mr-2 h-4 w-4" />
+                    <LogIn className="mr-2 h-4 w-4" />
                     Sign up with Google
                   </Button>
                 </form>
