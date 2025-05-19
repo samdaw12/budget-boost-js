@@ -1,7 +1,7 @@
 
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, sendPasswordResetEmail, updatePassword, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { toast } from '@/components/ui/sonner';
 
 // Your web app's Firebase configuration
@@ -18,6 +18,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const googleProvider = new GoogleAuthProvider();
 
 // Auth functions
 export const registerUser = async (email: string, password: string) => {
@@ -38,6 +39,17 @@ export const loginUser = async (email: string, password: string) => {
     return userCredential.user;
   } catch (error: any) {
     toast.error(error.message || "Failed to login");
+    throw error;
+  }
+};
+
+export const signInWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    toast.success("Logged in with Google successfully!");
+    return result.user;
+  } catch (error: any) {
+    toast.error(error.message || "Failed to login with Google");
     throw error;
   }
 };

@@ -1,7 +1,7 @@
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { User, onAuthStateChanged } from 'firebase/auth';
-import { auth, loginUser, logoutUser, registerUser, resetPassword, updateUserPassword } from '@/lib/firebase';
+import { auth, loginUser, logoutUser, registerUser, resetPassword, updateUserPassword, signInWithGoogle } from '@/lib/firebase';
 
 type AuthContextType = {
   currentUser: User | null;
@@ -11,6 +11,7 @@ type AuthContextType = {
   logout: () => Promise<boolean>;
   sendPasswordReset: (email: string) => Promise<boolean>;
   changePassword: (newPassword: string) => Promise<boolean>;
+  loginWithGoogle: () => Promise<User>;
 };
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -35,6 +36,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const register = (email: string, password: string) => {
     return registerUser(email, password);
   };
+  
+  const loginWithGoogle = () => {
+    return signInWithGoogle();
+  };
 
   const logout = () => {
     return logoutUser();
@@ -56,6 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     logout,
     sendPasswordReset,
     changePassword,
+    loginWithGoogle,
   };
 
   return (

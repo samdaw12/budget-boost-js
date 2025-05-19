@@ -9,6 +9,8 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { DollarSign, AlertCircle } from 'lucide-react';
+import { Google } from 'lucide-react';
+import { Separator } from '@/components/ui/separator';
 
 const Auth = () => {
   const [email, setEmail] = useState('');
@@ -17,7 +19,7 @@ const Auth = () => {
   const [showResetForm, setShowResetForm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login, register, sendPasswordReset } = useAuth();
+  const { login, register, sendPasswordReset, loginWithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -51,6 +53,20 @@ const Auth = () => {
       navigate('/dashboard');
     } catch (error: any) {
       setError(error.message || 'Failed to create an account');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setError('');
+    setLoading(true);
+    
+    try {
+      await loginWithGoogle();
+      navigate('/dashboard');
+    } catch (error: any) {
+      setError(error.message || 'Failed to sign in with Google');
     } finally {
       setLoading(false);
     }
@@ -173,6 +189,26 @@ const Auth = () => {
                   >
                     {loading ? 'Logging in...' : 'Login'}
                   </Button>
+                  
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <Separator />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleGoogleSignIn}
+                    disabled={loading}
+                  >
+                    <Google className="mr-2 h-4 w-4" />
+                    Sign in with Google
+                  </Button>
                 </form>
               </TabsContent>
               
@@ -206,6 +242,26 @@ const Auth = () => {
                     disabled={loading}
                   >
                     {loading ? 'Creating Account...' : 'Create Account'}
+                  </Button>
+                  
+                  <div className="relative my-4">
+                    <div className="absolute inset-0 flex items-center">
+                      <Separator />
+                    </div>
+                    <div className="relative flex justify-center text-xs uppercase">
+                      <span className="bg-card px-2 text-muted-foreground">Or register with</span>
+                    </div>
+                  </div>
+                  
+                  <Button 
+                    type="button" 
+                    variant="outline" 
+                    className="w-full"
+                    onClick={handleGoogleSignIn}
+                    disabled={loading}
+                  >
+                    <Google className="mr-2 h-4 w-4" />
+                    Sign up with Google
                   </Button>
                 </form>
               </TabsContent>
