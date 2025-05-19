@@ -9,9 +9,11 @@ import ExpenseCard from '@/components/ExpenseCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Separator } from '@/components/ui/separator';
 import { DollarSign } from 'lucide-react';
+import { useTransactions } from '@/context/TransactionContext';
 
 const ExpenseApp = () => {
   const { addExpense } = useExpenses();
+  const { transactions } = useTransactions();
 
   const handleQuickExpense = (expenseData: any) => {
     addExpense(expenseData);
@@ -50,7 +52,7 @@ const ExpenseApp = () => {
         </TabsContent>
         
         <TabsContent value="transactions">
-          <TransactionList />
+          <TransactionList transactions={transactions} />
         </TabsContent>
         
         <TabsContent value="add">
@@ -72,6 +74,7 @@ const ExpenseApp = () => {
 const Index = () => {
   return (
     <ExpenseProvider>
+      <TransactionList transactions={[]} />
       <ExpenseApp />
     </ExpenseProvider>
   );
